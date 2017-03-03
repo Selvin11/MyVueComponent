@@ -1,2 +1,11 @@
 # MyVueComponent
-make vue component by myself
+
+不断更新、完善`Vue`组件
+
+1. 分页组件
+    
+    * 包含数据获取，进行自动分页 
+    
+2. 加载组件
+
+    * 单列多圆点动画
