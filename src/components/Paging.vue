@@ -36,8 +36,9 @@
         },
         created(){
             let that = this
-            this.$http.get('http://localhost:8888/rest/api/list')
+            this.$http.get('http://localhost:8888/res/api/list')
                 .then(function (res) {
+                    console.log(res.data)
                     let postLength = res.data.length, // 所有数据数
                         forNum = Math.ceil(postLength / that.colNum) // 分页后单页数据数量
                     // 获取第一页数据
@@ -55,7 +56,30 @@
 
                 })
                 .catch(function (err) {
-                    console.log(err)
+                    // console.log(err)
+                    // 模拟数据
+                    let data = [
+                        {
+                            title: "第一条数据"
+                        },
+                        {
+                            title: "第二条数据"
+                        },
+                        {
+                            title: "第三条数据"
+                        }
+                    ]
+                    for (let i = 1; i <= 3; i++) {
+                        that.pages.push({
+                            num: i,
+                            isActive: false
+                        })
+                    }
+                    that.pages[0].isActive = true
+                    that.loading = false
+
+                    that.allPosts = data
+                    that.posts = data.slice(0, that.colNum)
                 })
         },
         methods: {
