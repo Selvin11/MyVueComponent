@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Hello from '@/components/Hello'
 import Paging from '@/components/Paging'
 import Loading from '@/components/Loading'
+import Button from '@/components/Button'
 
 Vue.use(Router)
 
@@ -22,6 +23,11 @@ export default new Router({
             path: '/loading',
             name: 'Loading',
             component: Loading
+        },
+        {
+            path: '/button',
+            name: 'Button',
+            component: Button
         }
     ]
 })

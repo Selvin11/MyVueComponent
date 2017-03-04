@@ -4,16 +4,22 @@
         <ul>
             <li><router-link to="/paging">分页组件</router-link></li>
             <li><router-link to="/loading">加载组件</router-link></li>
+            <li><router-link to="/button">按钮组件</router-link></li>
         </ul>
     </div>
 </template>
 
 <script>
+    import gButton from "./Button"
     export default {
         name: 'hello',
+        components:{
+            gButton
+        },
         data () {
             return {
-                msg: ''
+                msg: 'test',
+                show: true
             }
         }
     }
@@ -39,4 +45,6 @@
     a {
         color: #42b983;
     }
+
+
 </style>

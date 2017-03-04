@@ -36,7 +36,7 @@
         },
         created(){
             let that = this
-            this.$http.get('http://localhost:8888/res/api/list')
+            this.$http.get('http://localhost:8888/rest/api/list')
                 .then(function (res) {
                     console.log(res.data)
                     let postLength = res.data.length, // 所有数据数
