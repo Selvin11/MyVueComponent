@@ -1,5 +1,9 @@
 <template>
-    <button class="g-button-ripple" @click="rippleClick">
+    <button class="g-button-ripple"
+            @click="rippleClick"
+            @mouseover="addHover"
+            @mouseleave="removeHover"
+            :class="{hover:hover}">
         点我
         <slot></slot>
         <span class="g-ripple" :class="{animate: ripple_button.animate}"></span>
@@ -12,7 +16,8 @@
                 ripple_button: {
                     animate: false,
                     toggle: false
-                }
+                },
+                hover:false
             }
         },
         methods: {
@@ -32,6 +37,13 @@
                         this.ripple_button.animate = false
                     }, 700)
                 })
+            },
+            addHover(){
+
+                this.hover = true
+            },
+            removeHover(){
+                this.hover = false
             }
         }
     }
@@ -55,7 +67,7 @@
         outline: none;
         background: transparent;
     }
-    .g-button-ripple:hover {
+    .hover {
         background-color: hsla(0, 0%, 62%, .2);
     }
     .g-ripple {

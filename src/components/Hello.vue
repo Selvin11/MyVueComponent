@@ -18,7 +18,7 @@
         },
         data () {
             return {
-                msg: 'test',
+                msg: '',
                 show: true
             }
         }
