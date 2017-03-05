@@ -26,20 +26,27 @@
                 let button = e.target
                 let ripple = button.querySelector('.g-ripple')
                 if (ripple) {
-                    let d = Math.max(button.offsetHeight, button.offsetWidth)
+                    var d = Math.max(button.offsetHeight, button.offsetWidth)
                     let x = e.layerX - ripple.offsetWidth / 2
                     let y = e.layerY - ripple.offsetHeight / 2
                     ripple.setAttribute('style', 'height: ' + d + 'px; width: ' + d +
                         'px; top: ' + y + 'px; left: ' + x + 'px;')
                 }
                 this.$nextTick(() => {
-                    setTimeout(() => {
-                        this.ripple_button.animate = false
-                    }, 700)
+                    // 改变原有根据动画耗时，设置对应的延时函数，会有卡顿，
+                    // 改为动画监听，动画结束后重设才重设动画
+                    let that = this;
+                    if(ripple){
+                        ripple.addEventListener('animationend',function(){
+                            that.ripple_button.animate = false
+                        })
+                    }
+                    // setTimeout(() => {
+                    //     this.ripple_button.animate = false
+                    // }, 650)
                 })
             },
             addHover(){
-
                 this.hover = true
             },
             removeHover(){
