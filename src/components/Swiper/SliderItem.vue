@@ -7,7 +7,7 @@
 
 <script>
   export default {
-     name: 'SliderItem',
+    name: 'SliderItem',
     props: {
       count: {
         type: Number,

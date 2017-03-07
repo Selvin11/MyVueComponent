@@ -48,8 +48,8 @@
         },
         data(){
             return{
-                count: "",
-                current:0,
+                count: this.items.length,
+                current: 0,
                 styleObj:{
                     width: "",
                     transform: ""
@@ -57,8 +57,13 @@
             }
         },
         computed:{
-            doubelItem(){
-                return this.items.concat(this.items);
+            reverseItem(){
+                let prevItems = this.items,
+                    firstItem = prevItems.shift(),
+                    lastItem = prevItems.pop();
+                prevItems.push(lastItem);
+                prevItems.unshift(firstItem);
+                return this.items = prevItems;
             }
         },
         methods:{
@@ -84,16 +89,15 @@
         watch:{
             // data 对象中无法访问其对象中的其它属性？ 待探究
             current(){
-                if(this.current === this.count - 1){
-                    this.styleObj.transform = "translate3d(-" + (this.current / this.count) * 100 + "%,0,0)"
+                this.styleObj.transform = "translate3d(-" + (this.current / this.count) * 100 + "%,0,0)";
+                if(this.current === this.count - 2){
+                    this.reverseItem;
                 }
-
+                
             }
         },
         created(){
-            if(this.isLoop){
-                this.count = this.items.length;
-            }
+            
             this.play();
             this.styleObj.width = this.count * 100 + '%';
             this.styleObj.transform = "translate3d(-" + (this.current / this.count) * 100 + "%,0,0)";

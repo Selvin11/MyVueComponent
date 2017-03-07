@@ -13,7 +13,7 @@
                 items: [
                     {
                         src: 'http://placehold.it/350x150/999999/000000',
-                        alt: 'images-1111'
+                        alt: 'images-1'
                     },
                     {
                         src: 'http://placehold.it/350x150/eeeeee/c90023',
