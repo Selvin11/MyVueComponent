@@ -4,12 +4,11 @@
             @mouseover="addHover"
             @mouseleave="removeHover"
             :class="{hover:hover}">
-        点我
         <slot></slot>
         <span class="g-ripple" :class="{animate: ripple_button.animate}"></span>
     </button>
 </template>
-<script>
+<script> 
     export default {
         data () {
             return {
