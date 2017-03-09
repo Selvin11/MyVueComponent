@@ -35,5 +35,6 @@
             // 在组件模板中，接受父级传递来的数据，将自动遍历
 //            this.styleObj.left = this.itemIndex * 100 + '%'
         }
+
     }
 </script>

@@ -60,8 +60,9 @@
             }
         },
         data(){
-            return {
+            return{
                 count: this.items.length,
+                current: 0,
                 styleObj:{
                     left: ""
                 }
@@ -139,6 +140,7 @@
                     that.reverseStartEnd()
                 }
             })
+
         }
     }
 </script>
