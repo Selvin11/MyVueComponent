@@ -1,5 +1,9 @@
 <template>
-    <swiper :items="items">
+    <swiper
+        :items="items"
+        :is-loop="true"
+        :duration="500"
+    >
     </swiper>
 </template>
 <script>

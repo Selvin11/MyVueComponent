@@ -1,52 +1,46 @@
 <template>
     <div class="swiper-container">
-        <!--<ul class="swiper-wrapper">-->
-            <transition-group
-                tag="ul"
-                class="swiper-wrapper"
-                name="swiper-slider"
-                @before-enter="beforeEnter"
-                @enter="enter"
-                @after-enter="afterEnter"
-                mode="in-out"
-                >
-                <slider-item
-                        v-for="item,index in items"
-                        :count="count"
-                        :item="item"
-                        ref="slide"
-                        :item-index="index"
-                        :key="item"
-                >
-                </slider-item>
-            </transition-group>
-        <!--</ul>-->
-        <button @click="reverseStartEnd">
-            测试
-        </button>
+        <ul class="swiper-wrapper"
+            @mouseover="cancelPlay"
+            @mouseleave="play">
+            <slider-item
+                    v-for="(item,index) in items"
+                    :count="count"
+                    :item="item"
+                    ref="slide"
+                    :item-index="index"
+                    :key="item"
+            >
+            </slider-item>
+        </ul>
+        <div class="dot">
+            <dot-item
+                    v-for="index in count"
+                    :item-index="index"
+                    :current="current"
+                    :key="index"
+            >
+            </dot-item>
+        </div>
     </div>
 </template>
 <script>
     import sliderItem from "./SliderItem"
+    import dotItem from "./DotItem"
     export default{
         name: "swiper",
         components: {
-            sliderItem
+            sliderItem,
+            dotItem
         },
         props: {
             items: {
                 type: Array,
                 required: true
             },
-            pause: {
-                type: Boolean,
-                required: false,
-                default: true
-            },
-            autoplay: {
-                type: Boolean,
-                required: false,
-                default: true
+            duration:{
+                type: Number,
+                required:false
             },
             delay: {
                 type: Number,
@@ -62,85 +56,60 @@
         data(){
             return{
                 count: this.items.length,
-                current: 0,
-                styleObj:{
-                    left: ""
-                }
+                current: 1,
+                loopId: ""
             }
-        },
-        computed: {
-
         },
         methods:{
-            beforeEnter(el){
-                console.log(el)
+            cancelPlay(){
+                 clearInterval(this.loopId);
+                 this.loopId = null;
             },
-            enter(el,done){
-                console.log(2)
-                done()
-            },
-            afterEnter(){
-//                this.reverseStartEnd()
-                console.log(3)
+            play(){
+                this.loopId = this.interval();
             },
             moveLeft(){
-
-            },
-            reverseStartEnd(){
-                let start = this.items.shift()
-                this.items.push(start)
-                return this.items
-            }
-        },
-        watch: {
-            // data 对象中无法访问其对象中的其它属性？ 待探究
-            items(){
                 let slideArr = this.$refs.slide,
                     that = this;
                 Velocity(slideArr[0].$el,{
                     left: -100 + '%'
                 },{
-                    delay: 1000,
-                    duration: 1000
+                    delay: that.delay * that.duration,
+                    duration: that.duration
                 });
 
                 Velocity(slideArr[1].$el,{
-                    left: -100 + '%'
+                    left: 0 + '%',
+                    zIndex: 2
                 },{
-                    delay: 1000,
-                    duration: 1000,
+                    delay: that.delay * that.duration,
+                    duration: that.duration,
                     complete: function () {
-                        that.reverseStartEnd()
+                        that.changeCurrent();
+                        that.reverseStartEnd();
                     }
                 })
+            },
+            reverseStartEnd(){
+                // 同时改变数据和DOM节点的排序
+                this.items.push(this.items.shift())
+                this.$refs.slide.push(this.$refs.slide.shift())
+                return this.items
+            },
+            interval(){
+                return setInterval(() => this.moveLeft(), (this.delay + 2) * this.duration)
+            },
+            changeCurrent(){
+                this.current += 1;
+                if(this.current > this.count){
+                    this.current = 1;
+                }
             }
         },
-        created(){
-
-        },
         mounted(){
-            let slideArr = this.$refs.slide,
-                that = this;
-            console.log(slideArr[0].$el)
-//            setTimeout(()=>slideArr[0].$el.style.left = "-100%",1000)
-//            setTimeout(()=>slideArr[1].$el.style.left = "0%",1000)
-            Velocity(slideArr[0].$el,{
-                left: -100 + '%'
-            },{
-                delay: 1000,
-                duration: 1000
-            });
-
-            Velocity(slideArr[1].$el,{
-                left: -100 + '%'
-            },{
-                delay: 1000,
-                duration: 1000,
-                complete: function () {
-                    that.reverseStartEnd()
-                }
-            })
-
+            if(this.isLoop){
+                this.loopId = this.interval();
+            }
         }
     }
 </script>
@@ -171,24 +140,23 @@
         width: 100%;
         height: auto;
     }
-    /*.swiper-slider-enter {*/
-        /*opacity: 0;*/
-    /*}*/
-    /*.swiper-slider-enter-to{*/
-        /*opacity: 0;*/
-    /*}*/
-    /*.swiper-slider-leave{*/
-        /*opacity: 0;*/
-    /*}*/
-    /*.swiper-slider-leave-to{*/
 
-    /*}*/
-    /*.swiper-slider-move {*/
-        /*transition: all 1s;*/
-    /*}*/
-
-    /*.swiper-slider-enter-active, .swiper-slider-leave-active {*/
-        /*transition: all 1s;*/
-    /*}*/
+    .dot{
+        margin-top: 20px;
+        width:100%;
+        text-align: center;
+    }
+    .dot .dot-item{
+        display: inline-block;
+        margin: 0 10px;
+        width:15px;
+        height: 15px;
+        border-radius: 50%;
+        border:1px solid #000;
+        background-color: #ffffff;
+    }
+    .dot .dot-item.active{
+        background-color: #000;
+    }
 
 </style>
